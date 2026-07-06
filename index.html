@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPA & CGPA Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section class="top-section">
+      <div>
+        <p class="label">Student Calculator</p>
+        <h1>GPA & CGPA Calculator</h1>
+        <p class="intro">
+          Add your subjects, credits, and grades to calculate semester GPA.
+          Add older semesters and future "what if" semesters to estimate your final CGPA.
+        </p>
+      </div>
+      <div class="summary-panel">
+        <div>
+          <span>Semester GPA</span>
+          <strong id="semesterGpa">0.00</strong>
+        </div>
+        <div>
+          <span>Running CGPA</span>
+          <strong id="runningCgpa">0.00</strong>
+        </div>
+        <div>
+          <span>Graduation CGPA</span>
+          <strong id="graduationCgpa">0.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="calculator-grid">
+      <div class="panel">
+        <div class="panel-heading">
+          <h2>Current Semester</h2>
+        </div>
+
+        <form id="subjectForm" class="form-row">
+          <label>
+            Subject
+            <input id="subjectName" type="text" placeholder="Example: Maths" required>
+          </label>
+          <label>
+            Credits
+            <input id="subjectCredits" type="number" min="1" max="10" value="3" required>
+          </label>
+          <label>
+            Grade
+            <select id="subjectGrade" required>
+              <option value="10">O / A+ (10)</option>
+              <option value="9">A (9)</option>
+              <option value="8">B+ (8)</option>
+              <option value="7">B (7)</option>
+              <option value="6">C (6)</option>
+              <option value="5">D (5)</option>
+              <option value="0">F (0)</option>
+            </select>
+          </label>
+          <button class="primary-button" type="submit">Add</button>
+        </form>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Credits</th>
+                <th>Grade Point</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="subjectTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-heading">
+          <h2>Previous Semesters</h2>
+        </div>
+
+        <form id="previousForm" class="compact-form">
+          <label>
+            Semester GPA
+            <input id="previousGpa" type="number" min="0" max="10" step="0.01" placeholder="8.25" required>
+          </label>
+          <label>
+            Total Credits
+            <input id="previousCredits" type="number" min="1" max="50" placeholder="22" required>
+          </label>
+          <button class="primary-button" type="submit">Add Semester</button>
+        </form>
+
+        <ul id="previousList" class="semester-list"></ul>
+      </div>
+    </section>
+
+    <section class="panel what-if-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>What If Mode</h2>
+          <p>Simulate future semesters and see the CGPA you could graduate with.</p>
+        </div>
+      </div>
+
+      <form id="futureForm" class="compact-form">
+        <label>
+          Future GPA
+          <input id="futureGpa" type="number" min="0" max="10" step="0.01" placeholder="9.00" required>
+        </label>
+        <label>
+          Future Credits
+          <input id="futureCredits" type="number" min="1" max="50" placeholder="24" required>
+        </label>
+        <button class="primary-button" type="submit">Add What If</button>
+      </form>
+
+      <ul id="futureList" class="semester-list"></ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
