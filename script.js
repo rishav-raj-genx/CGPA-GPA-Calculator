@@ -1,6 +1,6 @@
 var subjects = [];
 var previousSemesters = [];
-var futureSemesters = [];
+var futureSubjects = [];
 
 var subjectForm = document.getElementById("subjectForm");
 var previousForm = document.getElementById("previousForm");
@@ -12,15 +12,17 @@ var subjectGradeInput = document.getElementById("subjectGrade");
 
 var previousGpaInput = document.getElementById("previousGpa");
 var previousCreditsInput = document.getElementById("previousCredits");
-var futureGpaInput = document.getElementById("futureGpa");
-var futureCreditsInput = document.getElementById("futureCredits");
+var futureSubjectNameInput = document.getElementById("futureSubjectName");
+var futureSubjectCreditsInput = document.getElementById("futureSubjectCredits");
+var futureSubjectGradeInput = document.getElementById("futureSubjectGrade");
 
 var subjectTable = document.getElementById("subjectTable");
 var previousList = document.getElementById("previousList");
-var futureList = document.getElementById("futureList");
+var futureSubjectTable = document.getElementById("futureSubjectTable");
 
 var semesterGpaText = document.getElementById("semesterGpa");
 var runningCgpaText = document.getElementById("runningCgpa");
+var futurePlanGpaText = document.getElementById("futurePlanGpa");
 var graduationCgpaText = document.getElementById("graduationCgpa");
 
 subjectForm.addEventListener("submit", function (event) {
@@ -57,13 +59,16 @@ previousForm.addEventListener("submit", function (event) {
 futureForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  var semester = {
-    gpa: Number(futureGpaInput.value),
-    credits: Number(futureCreditsInput.value)
+  var futureSubject = {
+    name: futureSubjectNameInput.value,
+    credits: Number(futureSubjectCreditsInput.value),
+    grade: Number(futureSubjectGradeInput.value)
   };
 
-  futureSemesters.push(semester);
+  futureSubjects.push(futureSubject);
   futureForm.reset();
+  futureSubjectCreditsInput.value = 3;
+  futureSubjectNameInput.focus();
 
   updateScreen();
 });
@@ -128,7 +133,7 @@ function getAllCompletedSemesters() {
 function updateScreen() {
   showSubjects();
   showSemesterList(previousList, previousSemesters, "Semester", deletePreviousSemester);
-  showSemesterList(futureList, futureSemesters, "What If", deleteFutureSemester);
+  showFutureSubjects();
   showResults();
 }
 
@@ -201,15 +206,62 @@ function showSemesterList(listElement, semesters, title, deleteFunction) {
   }
 }
 
+function showFutureSubjects() {
+  futureSubjectTable.innerHTML = "";
+
+  if (futureSubjects.length === 0) {
+    futureSubjectTable.innerHTML = '<tr><td colspan="4" class="empty-message">No future subject goals added yet.</td></tr>';
+    return;
+  }
+
+  for (var i = 0; i < futureSubjects.length; i++) {
+    var row = document.createElement("tr");
+    var nameCell = document.createElement("td");
+    var creditsCell = document.createElement("td");
+    var gradeCell = document.createElement("td");
+    var actionCell = document.createElement("td");
+    var deleteButton = document.createElement("button");
+
+    nameCell.textContent = futureSubjects[i].name;
+    creditsCell.textContent = futureSubjects[i].credits;
+    gradeCell.textContent = futureSubjects[i].grade;
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Remove";
+    deleteButton.onclick = function (index) {
+      return function () {
+        deleteFutureSubject(index);
+      };
+    }(i);
+
+    actionCell.appendChild(deleteButton);
+    row.appendChild(nameCell);
+    row.appendChild(creditsCell);
+    row.appendChild(gradeCell);
+    row.appendChild(actionCell);
+    futureSubjectTable.appendChild(row);
+  }
+}
+
 function showResults() {
   var currentGpa = calculateSubjectGpa(subjects);
   var completedSemesters = getAllCompletedSemesters();
   var runningCgpa = calculateCgpa(completedSemesters);
-  var graduationSemesters = completedSemesters.concat(futureSemesters);
+  var futureGpa = calculateSubjectGpa(futureSubjects);
+  var futureCredits = calculateTotalCredits(futureSubjects);
+  var graduationSemesters = completedSemesters.slice();
+
+  if (futureCredits > 0) {
+    graduationSemesters.push({
+      gpa: futureGpa,
+      credits: futureCredits
+    });
+  }
+
   var graduationCgpa = calculateCgpa(graduationSemesters);
 
   semesterGpaText.textContent = currentGpa.toFixed(2);
   runningCgpaText.textContent = runningCgpa.toFixed(2);
+  futurePlanGpaText.textContent = futureGpa.toFixed(2);
   graduationCgpaText.textContent = graduationCgpa.toFixed(2);
 }
 
@@ -223,8 +275,8 @@ function deletePreviousSemester(index) {
   updateScreen();
 }
 
-function deleteFutureSemester(index) {
-  futureSemesters.splice(index, 1);
+function deleteFutureSubject(index) {
+  futureSubjects.splice(index, 1);
   updateScreen();
 }
 

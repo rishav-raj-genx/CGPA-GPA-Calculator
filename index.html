@@ -14,7 +14,7 @@
         <h1>GPA & CGPA Calculator</h1>
         <p class="intro">
           Add your subjects, credits, and grades to calculate semester GPA.
-          Add older semesters and future "what if" semesters to estimate your final CGPA.
+          Add older semesters and future subject goals to estimate your final CGPA.
         </p>
       </div>
       <div class="summary-panel">
@@ -25,6 +25,10 @@
         <div>
           <span>Running CGPA</span>
           <strong id="runningCgpa">0.00</strong>
+        </div>
+        <div>
+          <span>Future Plan GPA</span>
+          <strong id="futurePlanGpa">0.00</strong>
         </div>
         <div>
           <span>Graduation CGPA</span>
@@ -103,23 +107,47 @@
       <div class="panel-heading">
         <div>
           <h2>What If Mode</h2>
-          <p>Simulate future semesters and see the CGPA you could graduate with.</p>
+          <p>Add future subjects with target grade points to set a clear aim for each subject.</p>
         </div>
       </div>
 
-      <form id="futureForm" class="compact-form">
+      <form id="futureForm" class="form-row">
         <label>
-          Future GPA
-          <input id="futureGpa" type="number" min="0" max="10" step="0.01" placeholder="9.00" required>
+          Subject
+          <input id="futureSubjectName" type="text" placeholder="Example: Project" required>
         </label>
         <label>
-          Future Credits
-          <input id="futureCredits" type="number" min="1" max="50" placeholder="24" required>
+          Credits
+          <input id="futureSubjectCredits" type="number" min="1" max="10" value="3" required>
         </label>
-        <button class="primary-button" type="submit">Add What If</button>
+        <label>
+          Target Grade
+          <select id="futureSubjectGrade" required>
+            <option value="10">O / A+ (10)</option>
+            <option value="9">A (9)</option>
+            <option value="8">B+ (8)</option>
+            <option value="7">B (7)</option>
+            <option value="6">C (6)</option>
+            <option value="5">D (5)</option>
+            <option value="0">F (0)</option>
+          </select>
+        </label>
+        <button class="primary-button" type="submit">Add Goal</button>
       </form>
 
-      <ul id="futureList" class="semester-list"></ul>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Future Subject</th>
+              <th>Credits</th>
+              <th>Target Grade Point</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="futureSubjectTable"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 
