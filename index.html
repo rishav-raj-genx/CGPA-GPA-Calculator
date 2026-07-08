@@ -1,70 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPA & CGPA Calculator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGPA & GPA Calculator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <section class="top-section">
+  <div class="app-shell">
+    <header class="hero">
       <div>
-        <p class="label">Student Calculator</p>
-        <h1>GPA & CGPA Calculator</h1>
-        <p class="intro">
-          Add your subjects, credits, and grades to calculate semester GPA.
-          Add older semesters and future subject goals to estimate your final CGPA.
-        </p>
+        <p class="eyebrow">Academic Planning</p>
+        <h1>CGPA & GPA Calculator</h1>
+        <p>Track semester performance, calculate GPA clearly, and test future semester outcomes with a professional planning dashboard.</p>
       </div>
-      <div class="summary-panel">
-        <div>
-          <span>Semester GPA</span>
-          <strong id="semesterGpa">0.00</strong>
-        </div>
-        <div>
-          <span>Running CGPA</span>
-          <strong id="runningCgpa">0.00</strong>
-        </div>
-        <div>
-          <span>Future Plan GPA</span>
-          <strong id="futurePlanGpa">0.00</strong>
-        </div>
-        <div>
-          <span>Graduation CGPA</span>
-          <strong id="graduationCgpa">0.00</strong>
-        </div>
-      </div>
+      <button id="resetButton" class="ghost-button" type="button">Reset All</button>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <p class="stat-label">Current Semester GPA</p>
+        <h2 id="semesterGpa">0.00</h2>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Running CGPA</p>
+        <h2 id="runningCgpa">0.00</h2>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">What-if Semester GPA</p>
+        <h2 id="futurePlanGpa">0.00</h2>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Projected Graduation CGPA</p>
+        <h2 id="graduationCgpa">0.00</h2>
+      </article>
     </section>
 
-    <section class="calculator-grid">
-      <div class="panel">
-        <div class="panel-heading">
-          <h2>Current Semester</h2>
+    <main class="content-grid">
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3>Current Semester</h3>
+            <p>Add subjects and calculate your semester GPA instantly.</p>
+          </div>
         </div>
 
-        <form id="subjectForm" class="form-row">
+        <form id="subjectForm" class="form-grid">
           <label>
             Subject
-            <input id="subjectName" type="text" placeholder="Example: Maths" required>
+            <input id="subjectName" type="text" placeholder="e.g. Calculus" required />
           </label>
           <label>
             Credits
-            <input id="subjectCredits" type="number" min="1" max="10" value="3" required>
+            <input id="subjectCredits" type="number" min="1" max="10" step="1" value="3" required />
           </label>
           <label>
             Grade
-            <select id="subjectGrade" required>
-              <option value="10">O / A+ (10)</option>
-              <option value="9">A (9)</option>
-              <option value="8">B+ (8)</option>
-              <option value="7">B (7)</option>
-              <option value="6">C (6)</option>
-              <option value="5">D (5)</option>
-              <option value="0">F (0)</option>
-            </select>
+            <input id="subjectGrade" type="text" placeholder="e.g. A, B+, or 4.0" value="4.0" required />
+            <small class="hint">Supports letter grades and numeric values.</small>
           </label>
-          <button class="primary-button" type="submit">Add</button>
+          <button type="submit">Add Subject</button>
         </form>
 
         <div class="table-wrap">
@@ -73,83 +68,89 @@
               <tr>
                 <th>Subject</th>
                 <th>Credits</th>
-                <th>Grade Point</th>
-                <th></th>
+                <th>Grade</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="subjectTable"></tbody>
           </table>
         </div>
-      </div>
 
-      <div class="panel">
-        <div class="panel-heading">
-          <h2>Previous Semesters</h2>
+        <div class="breakdown-panel">
+          <h4>Subject Breakdown</h4>
+          <ul id="subjectBreakdownList"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3>Previous Semesters</h3>
+            <p>Include completed semesters to build a real CGPA history.</p>
+          </div>
         </div>
 
-        <form id="previousForm" class="compact-form">
+        <form id="previousForm" class="form-grid compact">
           <label>
             Semester GPA
-            <input id="previousGpa" type="number" min="0" max="10" step="0.01" placeholder="8.25" required>
+            <input id="previousGpa" type="number" min="0" max="4.5" step="0.01" value="3.50" required />
           </label>
           <label>
-            Total Credits
-            <input id="previousCredits" type="number" min="1" max="50" placeholder="22" required>
+            Credits
+            <input id="previousCredits" type="number" min="1" max="40" step="1" value="15" required />
           </label>
-          <button class="primary-button" type="submit">Add Semester</button>
+          <button type="submit">Add Semester</button>
         </form>
 
         <ul id="previousList" class="semester-list"></ul>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel what-if-panel">
-      <div class="panel-heading">
-        <div>
-          <h2>What If Mode</h2>
-          <p>Add future subjects with target grade points to set a clear aim for each subject.</p>
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h3>What-if / Future Semester</h3>
+            <p>Plan upcoming subjects and see the GPA impact before you commit.</p>
+          </div>
         </div>
-      </div>
 
-      <form id="futureForm" class="form-row">
-        <label>
-          Subject
-          <input id="futureSubjectName" type="text" placeholder="Example: Project" required>
-        </label>
-        <label>
-          Credits
-          <input id="futureSubjectCredits" type="number" min="1" max="10" value="3" required>
-        </label>
-        <label>
-          Target Grade
-          <select id="futureSubjectGrade" required>
-            <option value="10">O / A+ (10)</option>
-            <option value="9">A (9)</option>
-            <option value="8">B+ (8)</option>
-            <option value="7">B (7)</option>
-            <option value="6">C (6)</option>
-            <option value="5">D (5)</option>
-            <option value="0">F (0)</option>
-          </select>
-        </label>
-        <button class="primary-button" type="submit">Add Goal</button>
-      </form>
+        <form id="futureForm" class="form-grid">
+          <label>
+            Subject
+            <input id="futureSubjectName" type="text" placeholder="e.g. Data Structures" required />
+          </label>
+          <label>
+            Credits
+            <input id="futureSubjectCredits" type="number" min="1" max="10" step="1" value="3" required />
+          </label>
+          <label>
+            Target Grade
+            <input id="futureSubjectGrade" type="text" placeholder="e.g. A, B+, or 4.0" value="4.0" required />
+            <small class="hint">Supports letter grades and numeric values.</small>
+          </label>
+          <button type="submit">Add Future Subject</button>
+        </form>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Future Subject</th>
-              <th>Credits</th>
-              <th>Target Grade Point</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="futureSubjectTable"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Credits</th>
+                <th>Target Grade</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="futureSubjectTable"></tbody>
+          </table>
+        </div>
+
+        <div class="breakdown-panel">
+          <h4>Future Semester Breakdown</h4>
+          <ul id="futureBreakdownList"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
